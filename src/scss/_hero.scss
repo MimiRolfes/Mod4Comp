@@ -41,12 +41,14 @@
   min-height: 600px;
   padding: 152px 84px 64px;
   border-radius: 36px;
-  /* etwas dunkler und weniger Frost als das übrige Glas – entspricht dem Eindruck in Figma */
-  background: rgba(28, 36, 24, 0.42);
+  /* Abgeglichen mit dem Figma-Export: dunkler, kühler Ton, feiner heller Rand,
+     zu den Kanten hin leicht dunkler (Figmas Glas bricht das Licht an der Kante) */
+  background: rgba(22, 34, 30, 0.46);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
+  border-color: rgba(255, 255, 255, 0.16);
   /* Figma: Schatten 0 8 24 + feine Lichtkante oben */
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 40px rgba(0, 0, 0, 0.18);
 }
 
 /* Werte aus Figma „Frame 1“, gemessen an der Glas-Karte: Logo 39 % der Kartenbreite,
