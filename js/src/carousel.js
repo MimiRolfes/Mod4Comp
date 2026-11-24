@@ -4,6 +4,7 @@
 //   die die Maus kommt (flach gedreht, Inhaltstausch bei 90° – so bleibt der Glas-Blur)
 // - Tastatur-Fokus dreht ebenfalls, Klick öffnet die Teilprojekt-Seite,
 //   auf Touch-Geräten dreht der erste Tipp
+// - seitlich wischbar (Trackpad / Touch), ohne Scrollbar
 // - hält bei Hover/Fokus an und wenn die Sektion nicht sichtbar ist;
 //   bei "Bewegung reduzieren" keine Animation
 
@@ -18,6 +19,7 @@
   var cards = Array.prototype.slice.call(track.querySelectorAll('.sp-card'));
   var touch = window.matchMedia('(hover: none)').matches;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dragged = false, swiping = false;
 
   // Die Drehung läuft auf den beiden Seiten (.sp-face), nicht auf .sp-card-inner:
   // dort liegen schon Anheben und Neigung per CSS – sonst springt die Karte nach
@@ -76,6 +78,7 @@
     card.addEventListener('focusout', function (e) { if (!card.contains(e.relatedTarget)) flip(card, false, -1); });
 
     card.addEventListener('click', function (e) {
+      if (dragged) { dragged = false; e.preventDefault(); return; }
       if (!link || e.target.closest('a')) return;
       if (touch && !card.classList.contains('is-back')) {
         track.querySelectorAll('.is-back').forEach(function (c) { if (c !== card) flip(c, false, -1); });
@@ -132,13 +135,45 @@
     new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(section);
   }
 
+  function moveTo(x) {
+    offset = loop > 0 ? ((x % loop) + loop) % loop : x;
+    track.style.transform = 'translate3d(' + -offset + 'px, 0, 0)';
+  }
+
+  // Seitlich wischen: Trackpad (horizontales Scrollen) und Touch-Wischen schieben
+  // die Spur mit, endlos in beide Richtungen. Danach läuft das Karussell weiter.
+  var resume = 0;
+  function pauseBriefly() { window.clearTimeout(resume); swiping = true; resume = window.setTimeout(function () { swiping = false; }, 1200); }
+
+  track.addEventListener('wheel', function (e) {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return; // senkrechtes Scrollen bleibt Seiten-Scrollen
+    e.preventDefault();
+    pauseBriefly();
+    moveTo(offset + e.deltaX);
+  }, { passive: false });
+
+  var startX = 0, startY = 0, startOffset = 0, horizontal = null;
+  track.addEventListener('touchstart', function (e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    startOffset = offset;
+    horizontal = null;
+    dragged = false;
+  }, { passive: true });
+  track.addEventListener('touchmove', function (e) {
+    var dx = e.touches[0].clientX - startX, dy = e.touches[0].clientY - startY;
+    if (horizontal === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) horizontal = Math.abs(dx) > Math.abs(dy);
+    if (!horizontal) return;
+    e.preventDefault();
+    dragged = true;
+    pauseBriefly();
+    moveTo(startOffset - dx);
+  }, { passive: false });
+
   function frame(t) {
     var dt = last ? Math.min(t - last, 100) / 1000 : 0;
     last = t;
-    if (!hold && visible && !document.hidden && loop > 0) {
-      offset = (offset + SPEED * dt) % loop;
-      track.style.transform = 'translate3d(' + -offset + 'px, 0, 0)';
-    }
+    if (!hold && !swiping && visible && !document.hidden && loop > 0) moveTo(offset + SPEED * dt);
     window.requestAnimationFrame(frame);
   }
   window.requestAnimationFrame(frame);
