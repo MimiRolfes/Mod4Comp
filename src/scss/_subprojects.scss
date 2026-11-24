@@ -1,0 +1,162 @@
+/* TEILPROJEKTE — schwebendes Karussell aus Glas-Karten.
+   Hover/Fokus dreht die Karte (Rückseite: Kurzfassung + Link). */
+
+.sp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  .heading { font-size: 46px; margin-bottom: 14px; }
+}
+.sp-intro { opacity: 0.75; font-size: 17px; }
+
+.sp-controls { display: flex; gap: 10px; flex-shrink: 0; }
+.sp-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  color: var(--paper);
+  font: 300 20px/1 var(--fb);
+  cursor: pointer;
+  transition: color var(--t);
+  &:hover { color: var(--leaf); }
+  &[aria-pressed="true"] { color: var(--leaf); }
+}
+
+/* Pause-Symbol (zwei Balken), gedrückt = Play-Dreieck */
+.sp-pause-icon {
+  display: inline-block;
+  width: 10px;
+  height: 12px;
+  border-left: 3px solid currentColor;
+  border-right: 3px solid currentColor;
+}
+.sp-btn[aria-pressed="true"] .sp-pause-icon {
+  width: 0;
+  border-right: 0;
+  border-left: 10px solid currentColor;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+
+/* Spur: startet an der Container-Kante, läuft rechts über den Rand hinaus */
+.sp-track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 64px max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter))) 72px;
+  scroll-padding-inline: max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter)));
+  &::-webkit-scrollbar { display: none; }
+}
+
+.sp-card {
+  position: relative;
+  flex: 0 0 290px;
+  height: 420px;
+  perspective: 1200px;
+  scroll-snap-align: start;
+  cursor: pointer;
+  animation: m4c-float 6s ease-in-out infinite;
+  &:nth-child(even) { margin-top: 28px; animation-delay: -3s; }
+}
+
+@keyframes m4c-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.sp-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.sp-card:hover .sp-card-inner,
+.sp-card:focus-within .sp-card-inner,
+.sp-card.is-flipped .sp-card-inner { transform: rotateY(180deg); }
+
+/* Glas ohne backdrop-filter: verträgt sich nicht mit 3D-Drehung, und hinter den Karten ist ohnehin nur Ink */
+.sp-face.glass {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+.sp-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 22px;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.sp-front { padding: 14px 14px 24px; }
+.sp-img img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+.sp-id {
+  margin: 22px 10px 8px;
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--leaf);
+}
+.sp-title {
+  margin: 0 10px;
+  font-family: var(--fh);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.22;
+  color: var(--paper);
+}
+
+.sp-back.glass { background: rgba(255, 255, 255, 0.13); }
+.sp-back {
+  transform: rotateY(180deg);
+  padding: 28px 24px;
+  .sp-id { margin: 0 0 14px; font-size: 11px; }
+  .sp-title { margin: 0 0 16px; }
+}
+.sp-short {
+  padding-top: 16px;
+  border-top: 1px solid rgba(246, 245, 241, 0.25);
+  font-size: 14px;
+  line-height: 1.55;
+  opacity: 0.85;
+}
+.sp-more {
+  margin-top: auto;
+  .wp-block-button__link {
+    background: none;
+    padding: 0;
+    color: var(--paper);
+    font-weight: 500;
+    font-size: 15px;
+    white-space: pre;
+  }
+}
+
+.sp-foot { display: flex; flex-direction: column; gap: 36px; }
+.sp-progress {
+  height: 2px;
+  background: rgba(246, 245, 241, 0.15);
+  span { display: block; height: 100%; width: 30%; background: var(--leaf); transition: width 0.3s ease; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-card { animation: none; }
+  .sp-card-inner { transition-duration: 0.01s; }
+  .sp-track { scroll-behavior: auto; }
+}

@@ -1,0 +1,56 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": true,
+		"color": {
+			"custom": true,
+			"customDuotone": false,
+			"palette": [
+				{ "slug": "paper", "name": "Paper", "color": "#F6F5F1" },
+				{ "slug": "page", "name": "Beige", "color": "#D6D0C6" },
+				{ "slug": "greige", "name": "Greige", "color": "#BEB7AE" },
+				{ "slug": "ink", "name": "Ink", "color": "#0B1530" },
+				{ "slug": "green", "name": "Grün", "color": "#24500F" },
+				{ "slug": "blue", "name": "Blau", "color": "#1F4E8C" },
+				{ "slug": "leaf", "name": "Leaf", "color": "#74CB00" }
+			]
+		},
+		"typography": {
+			"fontFamilies": [
+				{
+					"slug": "aldrich", "name": "Aldrich", "fontFamily": "'Aldrich', sans-serif",
+					"fontFace": [ { "fontFamily": "Aldrich", "fontWeight": "400", "fontStyle": "normal", "src": [ "file:./fonts/aldrich-400.woff2" ] } ]
+				},
+				{
+					"slug": "inter", "name": "Inter", "fontFamily": "'Inter', sans-serif",
+					"fontFace": [
+						{ "fontFamily": "Inter", "fontWeight": "400", "fontStyle": "normal", "src": [ "file:./fonts/inter-400.woff2" ] },
+						{ "fontFamily": "Inter", "fontWeight": "500", "fontStyle": "normal", "src": [ "file:./fonts/inter-500.woff2" ] },
+						{ "fontFamily": "Inter", "fontWeight": "600", "fontStyle": "normal", "src": [ "file:./fonts/inter-600.woff2" ] }
+					]
+				},
+				{
+					"slug": "mono", "name": "JetBrains Mono", "fontFamily": "'JetBrains Mono', monospace",
+					"fontFace": [
+						{ "fontFamily": "JetBrains Mono", "fontWeight": "400", "fontStyle": "normal", "src": [ "file:./fonts/jetbrains-mono-400.woff2" ] },
+						{ "fontFamily": "JetBrains Mono", "fontWeight": "500", "fontStyle": "normal", "src": [ "file:./fonts/jetbrains-mono-500.woff2" ] }
+					]
+				},
+				{
+					"slug": "athiti", "name": "Athiti", "fontFamily": "'Athiti', sans-serif",
+					"fontFace": [ { "fontFamily": "Athiti", "fontWeight": "600", "fontStyle": "normal", "src": [ "file:./fonts/athiti-600.woff2" ] } ]
+				}
+			]
+		},
+		"layout": { "contentSize": "1200px", "wideSize": "1200px" }
+	},
+	"styles": {
+		"color": { "background": "var(--wp--preset--color--page)", "text": "var(--wp--preset--color--ink)" },
+		"typography": { "fontFamily": "var(--wp--preset--font-family--inter)" },
+		"spacing": { "blockGap": "0" }
+	},
+	"templateParts": [
+		{ "name": "header", "title": "Header", "area": "header" }
+	]
+}

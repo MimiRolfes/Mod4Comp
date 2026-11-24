@@ -1,0 +1,48 @@
+/* ABOUT — Text + Bild, darunter drei Kennzahlen auf Greige */
+
+.about { background: var(--page); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 520px);
+  gap: 80px;
+  align-items: center;
+}
+
+.about-text {
+  .heading { margin-bottom: 28px; }
+  .lead { margin-bottom: 36px; }
+}
+
+.about-img img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 64px;
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 34px 28px;
+  border-radius: 20px;
+  background: var(--greige);
+}
+
+.metric-n {
+  font-family: var(--fh);
+  font-size: 56px;
+  line-height: 1;
+}
+.metric-n--green { color: var(--green); }
+.metric-n--blue { color: var(--blue); }
+
+.metric-l { font-weight: 500; font-size: 15px; line-height: 1.4; }

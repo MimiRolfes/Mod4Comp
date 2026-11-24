@@ -1,0 +1,24 @@
+{
+  "name": "mod4comp-wp-theme",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Build tooling for the Mod4Comp WordPress theme (Sass -> style.css, terser -> js/*.min.js).",
+  "scripts": {
+    "build:css": "node build-css.js",
+    "watch:css": "node build-css.js --watch",
+    "build:js": "node build-js.js",
+    "build": "npm run build:css && npm run build:js",
+    "dev": "npx @wp-playground/cli@latest server --mount=.:/wordpress/wp-content/themes/mod4comp --blueprint=blueprint-local.json --port=9400"
+  },
+  "browserslist": ["last 3 versions", "not dead"],
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "cssnano": "^7.0.0",
+    "postcss": "^8.4.38",
+    "sass": "^1.77.0",
+    "terser": "^5.51.2"
+  },
+  "author": "Milena Rolfes (https://github.com/MimiRolfes)",
+  "license": "MIT",
+  "engines": { "node": ">=18" }
+}

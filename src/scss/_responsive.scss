@@ -1,0 +1,28 @@
+/* Tablet / Handy */
+
+@media (max-width: 1000px) {
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .metrics { grid-template-columns: 1fr; }
+
+  .hero-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 48px 32px;
+    min-height: 0;
+  }
+  .hero-logo { position: static; width: 200px; margin-bottom: 32px; }
+  .hero-text { max-width: 100%; align-items: flex-start; text-align: left; }
+  .hero-sub { margin-top: 24px; }
+}
+
+@media (max-width: 700px) {
+  :root { --gutter: 20px; }
+  .section { padding: 80px 0; }
+  .heading, .sp-head .heading { font-size: 30px; }
+  .hero-title { font-size: 25px; overflow-wrap: anywhere; }
+  .hero-card { padding: 36px 24px; }
+  .sp-head { flex-direction: column; align-items: flex-start; }
+  .site-nav { left: 20px; transform: none; width: calc(100% - 140px); }
+  .lang-toggle { right: 20px; }
+  .sp-card { flex-basis: 260px; }
+}

@@ -1,3 +1,9 @@
 node_modules/
 npm-debug.log*
 .DS_Store
+src/css/
+
+# Moodboard-Bilder (Lizenz ungeklärt) – nur lokal, nicht im öffentlichen Repo.
+# Die Patterns zeigen ohne Datei einen leeren Bild-Platzhalter.
+images/*.jpg
+images/sp/

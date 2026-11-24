@@ -1,0 +1,94 @@
+/* Grundlagen: Reset, Farben (siehe PROJECT.md), Schriften, Glas, Buttons */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --paper:  #F6F5F1;
+  --page:   #D6D0C6;
+  --greige: #BEB7AE;
+  --ink:    #0B1530;
+  --green:  #24500F;   /* Akzent auf Beige (AA) */
+  --blue:   #1F4E8C;   /* Akzent auf Beige (AA) */
+  --leaf:   #74CB00;   /* nur auf Dunkel */
+  --lblue:  #9CC3F5;   /* Blau auf Dunkel */
+  --title:  #E4E0D8;   /* Hero-Titel */
+  --fh: 'Aldrich', sans-serif;
+  --fb: 'Inter', sans-serif;
+  --fm: 'JetBrains Mono', monospace;
+  --fa: 'Athiti', sans-serif;
+  --max: 1200px;
+  --gutter: 48px;
+  --t: 0.2s ease;
+}
+
+html { scroll-behavior: smooth; overflow-x: hidden; scroll-padding-top: 110px; }
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--fb);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+:where(figure.wp-block-image) { margin: 0; }
+
+/* Sprachumschalter: jeder Text existiert als .lang-en und .lang-de */
+html[data-lang="en"] .lang-de { display: none; }
+html[data-lang="de"] .lang-en { display: none; }
+
+:focus-visible { outline: 2px solid var(--leaf); outline-offset: 3px; border-radius: 4px; }
+
+.container { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+.section { padding: 120px 0; }
+.section--dark { background: var(--ink); color: var(--paper); }
+
+/* Dunkles Glas – einheitlich für Nav, Hero-Karte, Buttons */
+.glass {
+  background: rgba(28, 36, 24, 0.32);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.label {
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.label--green { color: var(--green); }
+.label--leaf { color: var(--leaf); }
+
+.heading { font-family: var(--fh); font-weight: 400; font-size: 38px; line-height: 1.12; }
+.lead { font-size: 18px; line-height: 1.6; opacity: 0.85; max-width: 560px; }
+
+/* Buttons (Kern-Schaltflächen): Pille */
+.btn .wp-block-button__link {
+  display: inline-block;
+  padding: 15px 26px;
+  border-radius: 999px;
+  font-family: var(--fb);
+  font-weight: 600;
+  font-size: 16px;
+  white-space: pre;
+  transition: transform var(--t), filter var(--t);
+}
+.btn .wp-block-button__link:hover { transform: translateY(-1px); filter: brightness(1.08); }
+.btn--leaf .wp-block-button__link { background: var(--leaf); color: var(--ink); }
+.btn--green .wp-block-button__link { background: var(--green); color: var(--paper); }
+
+.btn-link .wp-block-button__link {
+  background: none;
+  padding: 0 0 4px;
+  color: var(--lblue);
+  font-weight: 500;
+  white-space: pre;
+  border-bottom: 1px solid currentColor;
+  border-radius: 0;
+}

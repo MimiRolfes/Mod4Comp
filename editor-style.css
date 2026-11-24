@@ -1,0 +1,27 @@
+/* Nur im Block-Editor: beide Sprachen sichtbar (mit EN/DE-Marke), Karten-Rückseiten aufgeklappt. */
+
+.editor-styles-wrapper .lang-en,
+.editor-styles-wrapper .lang-de { position: relative; }
+.editor-styles-wrapper .lang-en::before,
+.editor-styles-wrapper .lang-de::before {
+	content: "EN";
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: translateY(-100%);
+	z-index: 50;
+	padding: 2px 5px;
+	font: 600 10px/1.2 system-ui, sans-serif;
+	color: #0B1530;
+	background: #74CB00;
+	pointer-events: none;
+}
+.editor-styles-wrapper .lang-de::before { content: "DE"; background: #9CC3F5; }
+
+.editor-styles-wrapper .site-nav,
+.editor-styles-wrapper .lang-toggle { position: relative; top: auto; left: auto; right: auto; transform: none; }
+
+.editor-styles-wrapper .sp-card { height: auto; animation: none; }
+.editor-styles-wrapper .sp-card-inner { transform: none !important; }
+.editor-styles-wrapper .sp-face { position: relative; transform: none; margin-bottom: 12px; }
+.editor-styles-wrapper .sp-track { overflow-x: auto; }

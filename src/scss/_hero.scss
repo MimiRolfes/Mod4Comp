@@ -1,0 +1,68 @@
+/* HERO — Foto, Glas-Karte, Logo ragt unten links heraus, Text rechtsbündig (Figma „Frame 1 – Variante“) */
+
+.hero {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: max(100vh, 760px);
+  padding: 140px 0 170px;
+  overflow: hidden;
+  color: var(--title);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.hero-card {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: min(1180px, calc(100% - 2 * var(--gutter)));
+  min-height: 600px;
+  padding: 64px 7%;
+  border-radius: 36px;
+  background: rgba(28, 36, 24, 0.32);
+}
+
+/* Werte aus Figma: Logo 500 px bei 1180 px Kartenbreite, 94 px links außerhalb, 222 px von oben */
+.hero-logo {
+  position: absolute;
+  left: -8%;
+  top: 37%;
+  width: 42.4%;
+  max-width: 500px;
+  img { width: 100%; height: auto; }
+}
+
+.hero-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  max-width: 56%;
+  text-align: right;
+}
+
+.hero-title {
+  font-family: var(--fh);
+  font-weight: 400;
+  font-size: clamp(30px, 3.2vw, 46px);
+  line-height: 1.12;
+  color: var(--title);
+}
+
+.hero-sub {
+  margin-top: 48px;
+  font-family: var(--fa);
+  font-weight: 600;
+  font-size: clamp(24px, 2.7vw, 40px);
+  line-height: 1.1;
+  color: var(--leaf);
+}
+
+.hero .btn { margin-top: 32px; }

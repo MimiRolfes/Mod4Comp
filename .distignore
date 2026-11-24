@@ -13,3 +13,4 @@ js/src
 .wp-env.json
 tests
 blueprint.json
+blueprint-local.json

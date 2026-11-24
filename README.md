@@ -10,13 +10,19 @@ Stand: Projekt angelegt, Theme noch im Aufbau.
 - PHP 8.2+
 - Node.js 18+ (nur für Build und Tests)
 
-## Lokal starten
+## Lokal starten (Testserver)
 
-Docker Desktop muss laufen:
+Nur Node.js nötig, kein Docker:
 
 ```bash
-npx @wordpress/env start   # → http://localhost:8888
+npm install
+npm run build   # style.css + js/*.min.js
+npm run dev     # → http://127.0.0.1:9400 (Login admin / password)
 ```
+
+`npm run dev` startet WordPress Playground mit diesem Theme, aktiviert es und legt Startseite + SP1–SP7 an (`blueprint-local.json`). Jeder Neustart beginnt frisch.
+
+Die Moodboard-Bilder (`images/*.jpg`, `images/sp/`) sind wegen ungeklärter Lizenz nicht im Repo; ohne sie zeigen die Bildflächen Platzhalter.
 
 ## Ansprechpartnerin für das Theme
 

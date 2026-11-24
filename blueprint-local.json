@@ -1,0 +1,11 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "/",
+	"preferredVersions": { "php": "8.2", "wp": "latest" },
+	"steps": [
+		{ "step": "setSiteOptions", "options": { "permalink_structure": "/%postname%/", "blogname": "Mod4Comp" } },
+		{ "step": "activateTheme", "themeFolderName": "mod4comp" },
+		{ "step": "runPHP", "code": "<?php require '/wordpress/wp-load.php'; m4c_seed_content();" },
+		{ "step": "login", "username": "admin", "password": "password" }
+	]
+}

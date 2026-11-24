@@ -1,0 +1,118 @@
+/* NAV — eine Glas-Leiste [MOD4COMP | +] wie im Satellite-Theme, Menü klappt darunter auf.
+   Sprachumschalter separat oben rechts. */
+
+.site-nav {
+  position: fixed;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 300;
+  width: min(300px, calc(100% - 140px));
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  height: 54px;
+  border-radius: 18px;
+}
+
+.nav-logo {
+  flex: 1;
+  padding-left: 22px;
+  font-family: var(--fh);
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper);
+  line-height: 1;
+}
+
+.nav-plus {
+  width: 58px;
+  height: 54px;
+  flex-shrink: 0;
+  background: none;
+  border: 0;
+  border-left: 1px solid rgba(242, 238, 230, 0.14);
+  color: var(--paper);
+  font: 300 24px/1 var(--fb);
+  cursor: pointer;
+  transition: color var(--t);
+  &:hover, &.open { color: var(--leaf); }
+}
+.nav-plus-icon { display: inline-block; transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.nav-plus.open .nav-plus-icon { transform: rotate(225deg); }
+
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scaleY(0.95);
+  transform-origin: top center;
+  transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.34, 1.3, 0.64, 1), visibility 0s linear 0.5s;
+
+  &.open { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+
+  > p + p { border-top: 1px solid rgba(242, 238, 230, 0.11); }
+  html[data-lang="en"] & > p.lang-en:first-child,
+  html[data-lang="de"] & > p.lang-en:first-child + p { border-top: 0; }
+
+  a {
+    display: block;
+    padding: 16px 22px;
+    font-family: var(--fh);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper);
+    transition: color var(--t);
+    &:hover, &:focus-visible { color: var(--leaf); }
+  }
+}
+
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(11, 21, 48, 0.12);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+  &.open { opacity: 1; visibility: visible; transition-delay: 0s; }
+}
+
+.lang-toggle {
+  position: fixed;
+  top: 26px;
+  right: 80px;
+  z-index: 300;
+  display: flex;
+  height: 54px;
+  padding: 0 6px;
+  border-radius: 18px;
+}
+.lang-toggle-btn {
+  padding: 0 12px;
+  background: none;
+  border: 0;
+  font-family: var(--fh);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--paper);
+  opacity: 0.45;
+  cursor: pointer;
+  transition: opacity var(--t);
+  &:hover, &[aria-pressed="true"] { opacity: 1; }
+}
+
+/* Angemeldet: WordPress-Adminleiste (32 px, mobil 46 px) nicht verdecken */
+.admin-bar .site-nav, .admin-bar .lang-toggle { top: 58px; }
+@media (max-width: 782px) { .admin-bar .site-nav, .admin-bar .lang-toggle { top: 72px; } }
