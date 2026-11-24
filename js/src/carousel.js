@@ -1,5 +1,5 @@
 // Teilprojekte-Karussell
-// - läuft endlos und langsam nach links, alle Karten reiten auf einer ruhigen Welle
+// - läuft endlos und langsam nach links, jede Karte schwebt für sich (CSS-Animation)
 // - Hover: Karte hebt sich, neigt sich zur Maus und dreht sich von der Seite, über
 //   die die Maus kommt (flach gedreht, Inhaltstausch bei 90° – so bleibt der Glas-Blur)
 // - Tastatur-Fokus dreht ebenfalls, Klick öffnet die Teilprojekt-Seite,
@@ -13,9 +13,6 @@
   if (!track) return;
 
   var SPEED = 30;      // px pro Sekunde
-  var WAVE_H = 14;     // Wellenhöhe in px
-  var WAVE_L = 1200;   // Wellenlänge in px
-  var WAVE_R = 0.8;    // maximale Neigung der Welle in Grad
   var TILT = 7;        // maximale Neigung zur Maus in Grad
 
   var cards = Array.prototype.slice.call(track.querySelectorAll('.sp-card'));
@@ -86,6 +83,18 @@
   }
   cards.forEach(bindCard);
 
+  // Schweben: je Karte eigene Dauer (s), Höhe (px), Neigung (°) und Versatz.
+  // Kopien bekommen dieselben Werte wie ihr Original, damit die Schleife nicht springt.
+  var FLOAT = [[6.4, 10, 0.6], [7.6, 13, -0.5], [5.8, 8, 0.7], [8.2, 12, -0.4], [6.9, 11, 0.5], [6.1, 9, -0.7], [7.8, 14, 0.4]];
+  function setFloat(card, i) {
+    var f = FLOAT[i % FLOAT.length];
+    card.style.setProperty('--float-dur', f[0] + 's');
+    card.style.setProperty('--float-amp', f[1] + 'px');
+    card.style.setProperty('--float-rot', f[2] + 'deg');
+    card.style.setProperty('--float-delay', (-f[0] * ((i * 0.37) % 1)).toFixed(2) + 's');
+  }
+  cards.forEach(setFloat);
+
   if (reduce) return;
 
   // Kopie für den nahtlosen Übergang: für Screenreader und Tastatur unsichtbar
@@ -96,6 +105,7 @@
     track.appendChild(copy);
     bindCard(copy);
   });
+  Array.prototype.forEach.call(track.children, function (c, i) { if (i >= cards.length) setFloat(c, i - cards.length); });
 
   var all = Array.prototype.slice.call(track.children);
   var loop = 0, offset = 0, last = 0, hold = false, visible = true;
@@ -111,23 +121,12 @@
     new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(section);
   }
 
-  function wave() {
-    all.forEach(function (card) {
-      var x = card.offsetLeft - offset + card.offsetWidth / 2;
-      var a = (x / WAVE_L) * 2 * Math.PI;
-      card.style.setProperty('--wave-y', (Math.sin(a) * WAVE_H).toFixed(2) + 'px');
-      card.style.setProperty('--wave-r', (Math.cos(a) * WAVE_R).toFixed(3) + 'deg');
-    });
-  }
-  wave();
-
   function frame(t) {
     var dt = last ? Math.min(t - last, 100) / 1000 : 0;
     last = t;
     if (!hold && visible && !document.hidden && loop > 0) {
       offset = (offset + SPEED * dt) % loop;
-      track.style.transform = 'translateX(' + -offset + 'px)';
-      wave();
+      track.style.transform = 'translate3d(' + -offset + 'px, 0, 0)';
     }
     window.requestAnimationFrame(frame);
   }
