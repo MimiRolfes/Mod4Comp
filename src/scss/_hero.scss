@@ -41,7 +41,10 @@
   min-height: 600px;
   padding: 152px 84px 64px;
   border-radius: 36px;
-  background: rgba(28, 36, 24, 0.32);
+  /* etwas dunkler und weniger Frost als das übrige Glas – entspricht dem Eindruck in Figma */
+  background: rgba(28, 36, 24, 0.42);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   /* Figma: Schatten 0 8 24 + feine Lichtkante oben */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
