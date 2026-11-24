@@ -17,21 +17,11 @@
 
 /* Endlos-Karussell: carousel.js hängt eine Kopie der Karten an und schiebt
    die Spur langsam nach links. Startet an der Container-Kante. */
+/* Karten gleiten am Bildschirmrand hinaus (kein Randverlauf: der Hintergrund hat
+   Lichtflecken, ein einfarbiger Verlauf darüber wäre als Streifen sichtbar) */
 .sp-carousel {
   position: relative;
   overflow: hidden;
-  /* weiche Ränder als Verlauf darüber (günstiger als eine Maske beim Animieren) */
-  &::before, &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 7%;
-    z-index: 2;
-    pointer-events: none;
-  }
-  &::before { left: 0; background: linear-gradient(90deg, var(--ink), transparent); }
-  &::after { right: 0; background: linear-gradient(-90deg, var(--ink), transparent); }
 }
 .sp-track {
   display: flex;
