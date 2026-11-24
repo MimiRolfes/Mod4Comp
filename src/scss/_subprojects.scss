@@ -5,7 +5,12 @@
 
 /* Endlos-Karussell: carousel.js hängt eine Kopie der Karten an und schiebt
    die Spur langsam nach links; Hover/Fokus hält an. Startet an der Container-Kante. */
-.sp-carousel { overflow: hidden; }
+.sp-carousel {
+  overflow: hidden;
+  /* Karten blenden an den Rändern weich ein und aus */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
 .sp-track {
   display: flex;
   gap: 24px;
@@ -20,13 +25,8 @@
   height: 420px;
   perspective: 1200px;
   cursor: pointer;
-  animation: m4c-float 6s ease-in-out infinite;
-  &.is-low { margin-top: 28px; animation-delay: -3s; }
-}
-
-@keyframes m4c-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+  /* Welle: carousel.js setzt Höhe und Neigung je nach Position auf dem Bildschirm */
+  transform: translateY(var(--wave-y, 0px)) rotate(var(--wave-r, 0deg));
 }
 
 .sp-card-inner {
@@ -110,7 +110,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sp-card { animation: none; }
+  .sp-card { transform: none; }
   .sp-card-inner { transition-duration: 0.01s; }
   .sp-carousel { overflow-x: auto; }
 }

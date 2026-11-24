@@ -21,21 +21,21 @@
   position: relative;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-start;
   width: min(1180px, calc(100% - 2 * var(--gutter)));
   min-height: 600px;
-  padding: 64px 7%;
+  padding: 152px 84px 64px;
   border-radius: 36px;
   background: rgba(28, 36, 24, 0.32);
 }
 
-/* Werte aus Figma: Logo 500 px bei 1180 px Kartenbreite, 94 px links außerhalb, 222 px von oben */
+/* Werte aus Figma (Karte 1180 × 600): Logo 460 px breit, 74 px links außerhalb, 242 px von oben */
 .hero-logo {
   position: absolute;
-  left: -8%;
-  top: 37%;
-  width: 42.4%;
-  max-width: 500px;
+  left: -6.26%;
+  top: 242px;
+  width: 39%;
+  max-width: 460px;
   img { width: 100%; height: auto; }
 }
 
@@ -52,7 +52,7 @@
   font-family: var(--fh);
   font-weight: 400;
   font-size: clamp(30px, 3.2vw, 46px);
-  line-height: 1.12;
+  line-height: 1.05;
   color: var(--title);
 }
 
@@ -61,8 +61,8 @@
   font-family: var(--fa);
   font-weight: 600;
   font-size: clamp(24px, 2.7vw, 40px);
-  line-height: 1.1;
+  line-height: 1.6;
   color: var(--leaf);
 }
 
-.hero .btn { margin-top: 32px; }
+.hero .btn { margin-top: 12px; }

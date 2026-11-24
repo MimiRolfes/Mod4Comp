@@ -9,12 +9,13 @@
   var track = section && section.querySelector('.sp-track');
   if (!track) return;
 
-  var SPEED = 32; // px pro Sekunde
+  var SPEED = 32;      // px pro Sekunde
+  var WAVE_H = 22;     // Wellenhöhe in px
+  var WAVE_L = 1100;   // Wellenlänge in px
+  var TILT = 1.2;      // maximale Neigung in Grad
   var cards = Array.prototype.slice.call(track.querySelectorAll('.sp-card'));
   var touch = window.matchMedia('(hover: none)').matches;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  cards.forEach(function (card, i) { if (i % 2) card.classList.add('is-low'); });
 
   function bindCard(card) {
     var link = card.querySelector('.sp-more a');
@@ -54,12 +55,26 @@
     new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(section);
   }
 
+  // Höhe und Neigung jeder Karte aus ihrer Position: alle reiten auf derselben Welle
+  var all = Array.prototype.slice.call(track.children);
+  function wave() {
+    var base = section.getBoundingClientRect().left;
+    all.forEach(function (card) {
+      var x = card.offsetLeft - offset + card.offsetWidth / 2 - base;
+      var a = (x / WAVE_L) * 2 * Math.PI;
+      card.style.setProperty('--wave-y', (Math.sin(a) * WAVE_H).toFixed(2) + 'px');
+      card.style.setProperty('--wave-r', (Math.cos(a) * TILT).toFixed(3) + 'deg');
+    });
+  }
+  wave();
+
   function frame(t) {
     var dt = last ? Math.min(t - last, 100) / 1000 : 0;
     last = t;
     if (!hold && visible && !document.hidden && loop > 0) {
       offset = (offset + SPEED * dt) % loop;
       track.style.transform = 'translateX(' + -offset + 'px)';
+      wave();
     }
     window.requestAnimationFrame(frame);
   }
