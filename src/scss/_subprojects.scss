@@ -71,6 +71,7 @@
   position: relative;
   width: 100%;
   height: 100%;
+  perspective: 900px; /* für die Drehung der Seiten */
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform;

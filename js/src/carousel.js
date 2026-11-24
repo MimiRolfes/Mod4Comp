@@ -19,25 +19,29 @@
   var touch = window.matchMedia('(hover: none)').matches;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Die Drehung läuft auf den beiden Seiten (.sp-face), nicht auf .sp-card-inner:
+  // dort liegen schon Anheben und Neigung per CSS – sonst springt die Karte nach
+  // dem Drehen zurück auf die CSS-Werte (das "Nachrutschen" nach oben).
+  function spin(faces, from, to, duration, easing) {
+    var anims = Array.prototype.map.call(faces, function (f) {
+      return f.animate([{ transform: 'rotateY(' + from + 'deg)' }, { transform: 'rotateY(' + to + 'deg)' }], { duration: duration, easing: easing });
+    });
+    return anims[0].finished;
+  }
+
   function flip(card, toBack, dir) {
     if (card.classList.contains('is-back') === toBack && !card._busy) return;
-    var inner = card.querySelector('.sp-card-inner');
-    if (reduce || !inner.animate) { card.classList.toggle('is-back', toBack); return; }
+    var faces = card.querySelectorAll('.sp-face');
+    if (reduce || !faces[0].animate) { card.classList.toggle('is-back', toBack); return; }
     var token = (card._busy || 0) + 1;
     card._busy = token;
     card.classList.remove('is-sweep');
     void card.offsetWidth;
     card.classList.add('is-sweep');
-    inner.animate(
-      [{ transform: 'perspective(900px) rotateY(0deg)' }, { transform: 'perspective(900px) rotateY(' + 90 * dir + 'deg)' }],
-      { duration: 200, easing: 'cubic-bezier(0.5, 0, 0.75, 0)' }
-    ).finished.then(function () {
+    spin(faces, 0, 90 * dir, 200, 'cubic-bezier(0.5, 0, 0.75, 0)').then(function () {
       if (card._busy !== token) return;
       card.classList.toggle('is-back', toBack);
-      return inner.animate(
-        [{ transform: 'perspective(900px) rotateY(' + -90 * dir + 'deg)' }, { transform: 'perspective(900px) rotateY(0deg)' }],
-        { duration: 520, easing: 'cubic-bezier(0.2, 1.45, 0.45, 1)' }
-      ).finished;
+      return spin(faces, -90 * dir, 0, 520, 'cubic-bezier(0.2, 1.45, 0.45, 1)');
     }).then(function () { if (card._busy === token) card._busy = 0; });
   }
 
