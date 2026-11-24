@@ -145,7 +145,8 @@
   var resume = 0;
   function pauseBriefly() { window.clearTimeout(resume); swiping = true; resume = window.setTimeout(function () { swiping = false; }, 1200); }
 
-  track.addEventListener('wheel', function (e) {
+  // Auf der ganzen Sektion (nicht nur über den Karten).
+  section.addEventListener('wheel', function (e) {
     if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return; // senkrechtes Scrollen bleibt Seiten-Scrollen
     e.preventDefault();
     pauseBriefly();
@@ -153,14 +154,14 @@
   }, { passive: false });
 
   var startX = 0, startY = 0, startOffset = 0, horizontal = null;
-  track.addEventListener('touchstart', function (e) {
+  section.addEventListener('touchstart', function (e) {
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
     startOffset = offset;
     horizontal = null;
     dragged = false;
   }, { passive: true });
-  track.addEventListener('touchmove', function (e) {
+  section.addEventListener('touchmove', function (e) {
     var dx = e.touches[0].clientX - startX, dy = e.touches[0].clientY - startY;
     if (horizontal === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) horizontal = Math.abs(dx) > Math.abs(dy);
     if (!horizontal) return;

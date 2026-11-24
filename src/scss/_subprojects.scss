@@ -11,6 +11,8 @@
     var(--ink);
 }
 
+.subprojects { touch-action: pan-y; } /* waagerechtes Wischen übernimmt carousel.js, senkrecht scrollt die Seite */
+
 .sp-head .heading { font-size: 46px; }
 
 /* Endlos-Karussell: carousel.js hängt eine Kopie der Karten an und schiebt
@@ -35,7 +37,6 @@
   display: flex;
   gap: 40px;
   width: max-content;
-  touch-action: pan-y; /* waagerechtes Wischen übernimmt carousel.js, senkrecht scrollt die Seite */
   padding: 72px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))) 80px;
   will-change: transform;
 }
