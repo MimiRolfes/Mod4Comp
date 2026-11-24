@@ -2,7 +2,8 @@
 // 1. Linien laufen von den Bildschirmrändern zur Mitte – jede aus der Richtung,
 //    in die ihre Leiterbahn im Logo zeigt
 // 2. dort zeichnen sich Drähte und Ringe, dann der Chip, Blatt und ∫Σ blenden ein
-// 3. das Logo schwebt an seine Stelle in der Hero-Karte, die Fläche blendet aus
+// 3. das Logo schwebt an seine Stelle in der Hero-Karte, die Fläche blendet aus,
+//    Glas-Karte, Text und Navigation blenden dabei sanft ein (vorher nur das Blumenfeld)
 // Klick, Taste oder Scrollen überspringt. Ob sie läuft, entscheidet m4c_intro_guard().
 
 (function () {
@@ -17,12 +18,13 @@
     if (done) return;
     done = true;
     try { sessionStorage.setItem('m4c-intro', '1'); } catch (e) {}
-    root.classList.remove('intro-on');
+    root.classList.remove('intro-on', 'intro-reveal');
     box.remove();
   }
 
   function skip() {
     if (done) return;
+    root.classList.add('intro-reveal');
     box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: 'forwards' }).finished.then(finish);
   }
   box.addEventListener('click', skip);
@@ -109,6 +111,7 @@
     // Flug zur Hero-Position
     window.setTimeout(function () {
       if (done) return;
+      root.classList.add('intro-reveal'); // Karte, Text und Navigation blenden ein
       var target = document.querySelector('.hero-logo img');
       var from = wrap.getBoundingClientRect();
       var to = target ? target.getBoundingClientRect() : from;
@@ -120,7 +123,7 @@
         { transform: 'translate(' + from.left + 'px,' + from.top + 'px) scale(1)' },
         { transform: 'translate(' + to.left + 'px,' + to.top + 'px) scale(' + s + ')' }
       ], { duration: 1000, easing: 'cubic-bezier(0.65, 0, 0.25, 1)', fill: 'forwards' });
-      box.animate([{ backgroundColor: 'rgba(11,21,48,0.9)' }, { backgroundColor: 'rgba(11,21,48,0)' }], {
+      box.animate([{ backgroundColor: 'rgba(11,21,48,0.84)' }, { backgroundColor: 'rgba(11,21,48,0)' }], {
         duration: 900, delay: 150, easing: 'ease-in-out', fill: 'forwards'
       });
       fly.finished.then(finish);

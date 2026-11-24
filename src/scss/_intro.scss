@@ -11,12 +11,22 @@ html.intro-on {
     inset: 0;
     z-index: 1000;
     /* Ink, das Blumenfeld des Heros schimmert leicht durch */
-    background: rgba(11, 21, 48, 0.9);
+    background: rgba(11, 21, 48, 0.84);
     cursor: pointer;
   }
 
   /* bis das fliegende Logo gelandet ist */
   .hero-logo { visibility: hidden; }
+
+  /* Während der Animation nur das Blumenfeld: Glas-Karte, Text und Navigation
+     blenden erst ein, wenn das Logo an seinen Platz fliegt (Klasse intro-reveal). */
+  .hero-card, .site-nav, .lang-toggle {
+    opacity: 0;
+    transition: opacity 1s ease 0.15s;
+  }
+  &.intro-reveal {
+    .hero-card, .site-nav, .lang-toggle { opacity: 1; }
+  }
 }
 
 .intro-lines {
