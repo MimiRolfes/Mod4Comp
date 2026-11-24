@@ -45,7 +45,15 @@ html[data-lang="de"] .lang-en { display: none; }
 :focus-visible { outline: 2px solid var(--leaf); outline-offset: 3px; border-radius: 4px; }
 
 .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
-.section { padding: 120px 0; }
+/* Jeder Abschnitt ist mindestens so hoch wie der Hero (eine Bildschirmhöhe), Inhalt mittig */
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: max(100vh, 760px);
+  padding: 120px 0;
+  > * { width: 100%; }
+}
 .section--dark { background: var(--ink); color: var(--paper); }
 
 /* Dunkles Glas – einheitlich für Nav, Hero-Karte, Buttons (Werte aus Figma: Glas-Effekt 61 ≈ 12 px Blur, keine Farbverstärkung) */
