@@ -1,13 +1,22 @@
-/* TEILPROJEKTE — schwebendes Karussell aus Glas-Karten.
-   Hover/Fokus dreht die Karte (Rückseite: Kurzfassung + Link). */
+/* TEILPROJEKTE — schwebendes Karussell aus Liquid-Glass-Karten.
+   Inspiration: „LiquidGlass FlipCard“ (Framer): flache Drehung mit Inhaltstausch
+   bei 90° (so bleibt der Glas-Blur erhalten), Drehrichtung = Seite, von der die
+   Maus kommt, Lichtstreifen beim Drehen, leichte Neigung zur Maus. */
+
+.subprojects {
+  /* weiche Lichtflecken, damit das Glas etwas zum Verwischen hat */
+  background:
+    radial-gradient(ellipse 45% 55% at 18% 62%, rgba(116, 203, 0, 0.16), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 82% 45%, rgba(31, 78, 140, 0.55), transparent 70%),
+    var(--ink);
+}
 
 .sp-head .heading { font-size: 46px; }
 
 /* Endlos-Karussell: carousel.js hängt eine Kopie der Karten an und schiebt
-   die Spur langsam nach links; Hover/Fokus hält an. Startet an der Container-Kante. */
+   die Spur langsam nach links. Startet an der Container-Kante. */
 .sp-carousel {
   overflow: hidden;
-  /* Karten blenden an den Rändern weich ein und aus */
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
 }
@@ -15,7 +24,7 @@
   display: flex;
   gap: 24px;
   width: max-content;
-  padding: 64px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))) 72px;
+  padding: 72px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))) 80px;
   will-change: transform;
 }
 
@@ -23,30 +32,21 @@
   position: relative;
   flex: 0 0 290px;
   height: 420px;
-  perspective: 1200px;
   cursor: pointer;
-  /* Welle: carousel.js setzt Höhe und Neigung je nach Position auf dem Bildschirm */
+  /* Welle: carousel.js setzt Höhe und Neigung je nach Position */
   transform: translateY(var(--wave-y, 0px)) rotate(var(--wave-r, 0deg));
 }
 
+/* Drehen (per JS animiert) + Neigung zur Maus + Anheben beim Hover */
 .sp-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.sp-card:hover .sp-card-inner,
-.sp-card:focus-within .sp-card-inner,
-.sp-card.is-flipped .sp-card-inner { transform: rotateY(180deg); }
+.sp-card.is-hover .sp-card-inner { --lift: -10px; }
 
-/* Glas ohne backdrop-filter: verträgt sich nicht mit 3D-Drehung, und hinter den Karten ist ohnehin nur Ink */
-.sp-face.glass {
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.22);
-}
 .sp-face {
   position: absolute;
   inset: 0;
@@ -54,9 +54,44 @@
   flex-direction: column;
   border-radius: 22px;
   overflow: hidden;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  transition: box-shadow 0.35s ease;
 }
+.sp-face.glass {
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03) 48%, rgba(255, 255, 255, 0.08));
+  -webkit-backdrop-filter: blur(10px) saturate(1.45) brightness(1.02);
+  backdrop-filter: blur(10px) saturate(1.45) brightness(1.02);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+}
+.sp-card.is-hover .sp-face.glass {
+  box-shadow:
+    0 34px 60px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Lichtstreifen, der beim Drehen über das Glas zieht */
+.sp-face::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.22) 50%, transparent 58%);
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+.sp-card.is-sweep .sp-face::after { animation: m4c-sweep 0.8s ease-out; }
+@keyframes m4c-sweep {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(110%); }
+}
+
+/* Rückseite erst nach dem Drehen sichtbar */
+.sp-back { display: none; }
+.sp-card.is-back .sp-back { display: flex; }
+.sp-card.is-back .sp-front { display: none; }
 
 .sp-front { padding: 14px 14px 24px; }
 .sp-img img {
@@ -83,9 +118,7 @@
   color: var(--paper);
 }
 
-.sp-back.glass { background: rgba(255, 255, 255, 0.13); }
 .sp-back {
-  transform: rotateY(180deg);
   padding: 28px 24px;
   .sp-id { margin: 0 0 14px; font-size: 11px; }
   .sp-title { margin: 0 0 16px; }
@@ -111,6 +144,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .sp-card { transform: none; }
-  .sp-card-inner { transition-duration: 0.01s; }
+  .sp-card-inner { transform: none; transition: none; }
   .sp-carousel { overflow-x: auto; }
 }

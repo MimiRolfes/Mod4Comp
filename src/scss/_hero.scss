@@ -29,11 +29,12 @@
   background: rgba(28, 36, 24, 0.32);
 }
 
-/* Werte aus Figma (Karte 1180 × 600): Logo 460 px breit, 74 px links außerhalb, 242 px von oben */
+/* Werte aus Figma „Frame 1“, gemessen an der Glas-Karte: Logo 39 % der Kartenbreite,
+   6,15 % links außerhalb, Oberkante bei 36 % der Kartenhöhe */
 .hero-logo {
   position: absolute;
-  left: -6.26%;
-  top: 242px;
+  left: -6.15%;
+  top: 36%;
   width: 39%;
   max-width: 460px;
   img { width: 100%; height: auto; }
