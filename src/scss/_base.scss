@@ -48,11 +48,11 @@ html[data-lang="de"] .lang-en { display: none; }
 .section { padding: 120px 0; }
 .section--dark { background: var(--ink); color: var(--paper); }
 
-/* Dunkles Glas – einheitlich für Nav, Hero-Karte, Buttons */
+/* Dunkles Glas – einheitlich für Nav, Hero-Karte, Buttons (Werte aus Figma: Glas-Effekt 61 ≈ 12 px Blur, keine Farbverstärkung) */
 .glass {
   background: rgba(28, 36, 24, 0.32);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
-  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
