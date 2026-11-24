@@ -1,55 +1,17 @@
 /* TEILPROJEKTE — schwebendes Karussell aus Glas-Karten.
    Hover/Fokus dreht die Karte (Rückseite: Kurzfassung + Link). */
 
-.sp-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 32px;
-  .heading { font-size: 46px; margin-bottom: 14px; }
-}
-.sp-intro { opacity: 0.75; font-size: 17px; }
+.sp-head .heading { font-size: 46px; }
 
-.sp-controls { display: flex; gap: 10px; flex-shrink: 0; }
-.sp-btn {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  color: var(--paper);
-  font: 300 20px/1 var(--fb);
-  cursor: pointer;
-  transition: color var(--t);
-  &:hover { color: var(--leaf); }
-  &[aria-pressed="true"] { color: var(--leaf); }
-}
-
-/* Pause-Symbol (zwei Balken), gedrückt = Play-Dreieck */
-.sp-pause-icon {
-  display: inline-block;
-  width: 10px;
-  height: 12px;
-  border-left: 3px solid currentColor;
-  border-right: 3px solid currentColor;
-}
-.sp-btn[aria-pressed="true"] .sp-pause-icon {
-  width: 0;
-  border-right: 0;
-  border-left: 10px solid currentColor;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-}
-
-/* Spur: startet an der Container-Kante, läuft rechts über den Rand hinaus */
+/* Endlos-Karussell: carousel.js hängt eine Kopie der Karten an und schiebt
+   die Spur langsam nach links; Hover/Fokus hält an. Startet an der Container-Kante. */
+.sp-carousel { overflow: hidden; }
 .sp-track {
   display: flex;
   gap: 24px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  padding: 64px max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter))) 72px;
-  scroll-padding-inline: max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter)));
-  &::-webkit-scrollbar { display: none; }
+  width: max-content;
+  padding: 64px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))) 72px;
+  will-change: transform;
 }
 
 .sp-card {
@@ -57,10 +19,9 @@
   flex: 0 0 290px;
   height: 420px;
   perspective: 1200px;
-  scroll-snap-align: start;
   cursor: pointer;
   animation: m4c-float 6s ease-in-out infinite;
-  &:nth-child(even) { margin-top: 28px; animation-delay: -3s; }
+  &.is-low { margin-top: 28px; animation-delay: -3s; }
 }
 
 @keyframes m4c-float {
@@ -148,15 +109,8 @@
   }
 }
 
-.sp-foot { display: flex; flex-direction: column; gap: 36px; }
-.sp-progress {
-  height: 2px;
-  background: rgba(246, 245, 241, 0.15);
-  span { display: block; height: 100%; width: 30%; background: var(--leaf); transition: width 0.3s ease; }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .sp-card { animation: none; }
   .sp-card-inner { transition-duration: 0.01s; }
-  .sp-track { scroll-behavior: auto; }
+  .sp-carousel { overflow-x: auto; }
 }

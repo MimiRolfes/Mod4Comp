@@ -56,20 +56,8 @@ m4c_close( 'section' );
 /* ───────────── TEILPROJEKTE (Karussell) ───────────── */
 m4c_open( 'section section--dark subprojects', 'section', 'subprojects' );
 m4c_open( 'container sp-head' );
-m4c_open( 'sp-head-text' );
 m4c_i18n( '/ Subprojects', '/ Teilprojekte', 'p', 'label label--leaf' );
 m4c_i18n( 'Get to know our subprojects', 'Lerne unsere Teilprojekte kennen', 'h2', 'heading' );
-m4c_i18n( 'Seven subprojects at FAU Erlangen-Nürnberg, TU Dresden and Forschungszentrum Jülich.', 'Sieben Teilprojekte an der FAU Erlangen-Nürnberg, der TU Dresden und dem Forschungszentrum Jülich.', 'p', 'sp-intro' );
-m4c_close();
-?>
-<!-- wp:html {"metadata":{"name":"Karussell-Steuerung (nicht bearbeiten)"},"lock":{"move":true,"remove":true}} -->
-<div class="sp-controls">
-	<button type="button" class="sp-btn glass" data-sp="prev" aria-label="Previous subprojects">←</button>
-	<button type="button" class="sp-btn glass" data-sp="pause" aria-label="Pause carousel" aria-pressed="false"><span class="sp-pause-icon" aria-hidden="true"></span></button>
-	<button type="button" class="sp-btn glass" data-sp="next" aria-label="Next subprojects">→</button>
-</div>
-<!-- /wp:html -->
-<?php
 m4c_close();
 
 m4c_open( 'sp-carousel' );
@@ -95,14 +83,5 @@ foreach ( m4c_subprojects() as $m4c_n => $m4c_sp ) {
 	m4c_close();
 }
 m4c_close();
-m4c_close();
-
-m4c_open( 'container sp-foot' );
-?>
-<!-- wp:html {"metadata":{"name":"Karussell-Fortschritt (nicht bearbeiten)"},"lock":{"move":true,"remove":true}} -->
-<div class="sp-progress" aria-hidden="true"><span></span></div>
-<!-- /wp:html -->
-<?php
-m4c_button( 'All subprojects  →', 'Alle Teilprojekte  →', home_url( '/subprojects/' ), 'btn-link' );
 m4c_close();
 m4c_close( 'section' );

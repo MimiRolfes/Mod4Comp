@@ -1,66 +1,22 @@
-// Teilprojekte-Karussell: läuft langsam von selbst, Pfeile + Pause (WCAG 2.2.2),
-// hält bei Hover/Fokus an, bei "Bewegung reduzieren" gar nicht.
-// Klick auf eine Karte öffnet die Teilprojekt-Seite (Link "Learn more");
-// auf Touch-Geräten dreht der erste Tipp die Karte, der zweite öffnet sie.
+// Teilprojekte-Karussell: läuft endlos und langsam von selbst nach links.
+// Hält an, solange Maus oder Tastatur-Fokus auf den Karten ist oder die
+// Sektion nicht sichtbar ist. Bei "Bewegung reduzieren" läuft es nicht
+// (dann wischt/scrollt man selbst). Klick auf eine Karte öffnet die
+// Teilprojekt-Seite; auf Touch-Geräten dreht der erste Tipp die Karte.
 
 (function () {
   var section = document.querySelector('.subprojects');
   var track = section && section.querySelector('.sp-track');
   if (!track) return;
 
-  var bar = section.querySelector('.sp-progress span');
-  var pauseBtn = section.querySelector('[data-sp="pause"]');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SPEED = 32; // px pro Sekunde
+  var cards = Array.prototype.slice.call(track.querySelectorAll('.sp-card'));
   var touch = window.matchMedia('(hover: none)').matches;
-  var paused = reduce, hovering = false, visible = true;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function step() {
-    var card = track.querySelector('.sp-card');
-    return card ? card.getBoundingClientRect().width + 24 : 300;
-  }
-  function atEnd() { return track.scrollLeft + track.clientWidth >= track.scrollWidth - 4; }
+  cards.forEach(function (card, i) { if (i % 2) card.classList.add('is-low'); });
 
-  function go(dir) {
-    if (dir > 0 && atEnd()) { track.scrollTo({ left: 0 }); return; }
-    if (dir < 0 && track.scrollLeft <= 4) { track.scrollTo({ left: track.scrollWidth }); return; }
-    track.scrollBy({ left: dir * step() });
-  }
-
-  function progress() {
-    if (bar) bar.style.width = Math.min(100, (track.scrollLeft + track.clientWidth) / track.scrollWidth * 100) + '%';
-  }
-
-  section.querySelector('[data-sp="prev"]').addEventListener('click', function () { go(-1); });
-  section.querySelector('[data-sp="next"]').addEventListener('click', function () { go(1); });
-
-  if (pauseBtn) {
-    function setPaused(p) {
-      paused = p;
-      pauseBtn.setAttribute('aria-pressed', p ? 'true' : 'false');
-      pauseBtn.setAttribute('aria-label', p ? 'Play carousel' : 'Pause carousel');
-    }
-    setPaused(paused);
-    pauseBtn.addEventListener('click', function () { setPaused(!paused); });
-  }
-
-  track.addEventListener('scroll', progress, { passive: true });
-  window.addEventListener('resize', progress);
-  progress();
-
-  track.addEventListener('mouseenter', function () { hovering = true; });
-  track.addEventListener('mouseleave', function () { hovering = false; });
-  track.addEventListener('focusin', function () { hovering = true; });
-  track.addEventListener('focusout', function () { hovering = false; });
-
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(section);
-  }
-
-  window.setInterval(function () {
-    if (!paused && !hovering && visible && !document.hidden) go(1);
-  }, 4000);
-
-  track.querySelectorAll('.sp-card').forEach(function (card) {
+  function bindCard(card) {
     var link = card.querySelector('.sp-more a');
     card.addEventListener('click', function (e) {
       if (!link || e.target.closest('a')) return;
@@ -71,5 +27,41 @@
       }
       window.location.href = link.href;
     });
+  }
+  cards.forEach(bindCard);
+
+  if (reduce) return;
+
+  // Kopie für den nahtlosen Übergang: für Screenreader und Tastatur unsichtbar
+  cards.forEach(function (card) {
+    var copy = card.cloneNode(true);
+    copy.setAttribute('aria-hidden', 'true');
+    copy.querySelectorAll('a').forEach(function (a) { a.setAttribute('tabindex', '-1'); });
+    track.appendChild(copy);
+    bindCard(copy);
   });
+
+  var loop = 0, offset = 0, last = 0, hold = false, visible = true;
+  function measure() { loop = track.children[cards.length].offsetLeft - cards[0].offsetLeft; }
+  measure();
+  window.addEventListener('resize', measure);
+
+  track.addEventListener('mouseenter', function () { hold = true; });
+  track.addEventListener('mouseleave', function () { hold = false; });
+  track.addEventListener('focusin', function () { hold = true; });
+  track.addEventListener('focusout', function () { hold = false; });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (e) { visible = e[0].isIntersecting; }).observe(section);
+  }
+
+  function frame(t) {
+    var dt = last ? Math.min(t - last, 100) / 1000 : 0;
+    last = t;
+    if (!hold && visible && !document.hidden && loop > 0) {
+      offset = (offset + SPEED * dt) % loop;
+      track.style.transform = 'translateX(' + -offset + 'px)';
+    }
+    window.requestAnimationFrame(frame);
+  }
+  window.requestAnimationFrame(frame);
 })();
