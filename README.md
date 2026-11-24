@@ -17,7 +17,7 @@ Nur Node.js nötig, kein Docker:
 ```bash
 npm install
 npm run build   # style.css + js/*.min.js
-npm run dev     # → http://127.0.0.1:9400 (Login admin / password)
+npm run dev     # erster freier Port ab 9488, Link steht in der Ausgabe (Login admin / password)
 ```
 
 `npm run dev` startet WordPress Playground mit diesem Theme, aktiviert es und legt Startseite + SP1–SP7 an (`blueprint-local.json`). Jeder Neustart beginnt frisch.
