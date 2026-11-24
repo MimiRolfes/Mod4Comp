@@ -37,7 +37,7 @@
   display: flex;
   gap: 40px;
   width: max-content;
-  padding: 72px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))) 80px;
+  padding: 110px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))) 80px;
   will-change: transform;
 }
 
