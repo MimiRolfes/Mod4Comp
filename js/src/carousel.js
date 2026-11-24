@@ -83,15 +83,22 @@
   }
   cards.forEach(bindCard);
 
-  // Schweben: je Karte eigene Dauer (s), Höhe (px), Neigung (°) und Versatz.
+  // Schweben: je Karte eigene Drift-Dauer, Dreh-Dauer (s), Weite x/y (px) und Drehung (°).
   // Kopien bekommen dieselben Werte wie ihr Original, damit die Schleife nicht springt.
-  var FLOAT = [[6.4, 10, 0.6], [7.6, 13, -0.5], [5.8, 8, 0.7], [8.2, 12, -0.4], [6.9, 11, 0.5], [6.1, 9, -0.7], [7.8, 14, 0.4]];
+  var FLOAT = [
+    [11.0, 15.0, 9, 15, 1.4], [13.5, 11.5, 12, 11, -1.1], [9.8, 17.0, 7, 17, 1.8], [12.6, 13.2, 11, 13, -1.5],
+    [10.4, 16.4, 8, 16, 1.2], [14.2, 12.4, 13, 12, -1.7], [11.8, 14.6, 10, 18, 1.3]
+  ];
   function setFloat(card, i) {
     var f = FLOAT[i % FLOAT.length];
-    card.style.setProperty('--float-dur', f[0] + 's');
-    card.style.setProperty('--float-amp', f[1] + 'px');
-    card.style.setProperty('--float-rot', f[2] + 'deg');
-    card.style.setProperty('--float-delay', (-f[0] * ((i * 0.37) % 1)).toFixed(2) + 's');
+    var st = card.style;
+    st.setProperty('--drift-dur', f[0] + 's');
+    st.setProperty('--spin-dur', f[1] + 's');
+    st.setProperty('--ax', f[2] + 'px');
+    st.setProperty('--ay', f[3] + 'px');
+    st.setProperty('--rot', f[4] + 'deg');
+    st.setProperty('--drift-delay', (-f[0] * ((i * 0.37) % 1)).toFixed(2) + 's');
+    st.setProperty('--spin-delay', (-f[1] * ((i * 0.61) % 1)).toFixed(2) + 's');
   }
   cards.forEach(setFloat);
 

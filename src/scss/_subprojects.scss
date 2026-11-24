@@ -33,7 +33,7 @@
 }
 .sp-track {
   display: flex;
-  gap: 24px;
+  gap: 40px;
   width: max-content;
   padding: 72px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))) 80px;
   will-change: transform;
@@ -44,14 +44,26 @@
   flex: 0 0 290px;
   height: 420px;
   cursor: pointer;
-  /* Jede Karte schwebt für sich: carousel.js gibt jeder eigene Dauer, Höhe, Neigung und Versatz */
-  animation: m4c-float var(--float-dur, 7s) ease-in-out var(--float-delay, 0s) infinite;
-  will-change: transform;
+  /* Schweben wie im All: jede Karte driftet auf einem eigenen, unregelmäßigen Weg
+     (translate) und dreht sich unabhängig davon langsam hin und her (rotate).
+     Zwei Animationen mit verschiedenen Dauern -> die Bewegung wiederholt sich kaum sichtbar.
+     Werte je Karte setzt carousel.js. */
+  animation:
+    m4c-drift var(--drift-dur, 11s) ease-in-out var(--drift-delay, 0s) infinite,
+    m4c-spin var(--spin-dur, 14s) ease-in-out var(--spin-delay, 0s) infinite alternate;
+  will-change: translate, rotate;
 }
 
-@keyframes m4c-float {
-  0%, 100% { transform: translateY(calc(var(--float-amp, 10px) * -1)) rotate(var(--float-rot, 0deg)); }
-  50% { transform: translateY(var(--float-amp, 10px)) rotate(calc(var(--float-rot, 0deg) * -1)); }
+@keyframes m4c-drift {
+  0%, 100% { translate: 0 0; }
+  22% { translate: calc(var(--ax, 8px) * 0.8) calc(var(--ay, 14px) * -1); }
+  48% { translate: calc(var(--ax, 8px) * -1) calc(var(--ay, 14px) * -0.2); }
+  71% { translate: calc(var(--ax, 8px) * 0.3) var(--ay, 14px); }
+  88% { translate: calc(var(--ax, 8px) * -0.6) calc(var(--ay, 14px) * 0.4); }
+}
+@keyframes m4c-spin {
+  from { rotate: calc(var(--rot, 1.2deg) * -1); }
+  to { rotate: var(--rot, 1.2deg); }
 }
 
 /* Drehen (per JS animiert) + Neigung zur Maus + Anheben beim Hover */
