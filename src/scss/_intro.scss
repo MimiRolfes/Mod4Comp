@@ -1,0 +1,45 @@
+/* START-ANIMATION (nur Startseite, siehe functions.php + js/src/intro.js) */
+
+.intro { display: none; }
+
+html.intro-on {
+  overflow: hidden;
+
+  .intro {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    /* Ink, das Blumenfeld des Heros schimmert leicht durch */
+    background: rgba(11, 21, 48, 0.9);
+    cursor: pointer;
+  }
+
+  /* bis das fliegende Logo gelandet ist */
+  .hero-logo { visibility: hidden; }
+}
+
+.intro-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  path {
+    fill: none;
+    stroke: var(--leaf);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 4px rgba(116, 203, 0, 0.8));
+  }
+}
+
+.intro-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(42vmin, 360px);
+  transform: translate(-50%, -50%);
+  transform-origin: 0 0;
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+}

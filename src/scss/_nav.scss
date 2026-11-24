@@ -116,3 +116,5 @@
 /* Angemeldet: WordPress-Adminleiste (32 px, mobil 46 px) nicht verdecken */
 .admin-bar .site-nav, .admin-bar .lang-toggle { top: 58px; }
 @media (max-width: 782px) { .admin-bar .site-nav, .admin-bar .lang-toggle { top: 72px; } }
+
+.nav-bar { cursor: pointer; }

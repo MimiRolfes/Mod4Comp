@@ -16,7 +16,13 @@
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
-  toggle.addEventListener('click', function () { setNav(!dropdown.classList.contains('open')); });
+  // Die ganze Leiste öffnet/schließt das Menü (auch "MOD4COMP"; Home steht im Menü).
+  // Der +-Knopf bleibt das eigentliche Bedienelement für Tastatur und Screenreader.
+  var bar = toggle.closest('.nav-bar');
+  (bar || toggle).addEventListener('click', function (e) {
+    e.preventDefault();
+    setNav(!dropdown.classList.contains('open'));
+  });
   backdrop.addEventListener('click', function () { setNav(false); });
   dropdown.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setNav(false); }); });
   document.addEventListener('keydown', function (e) {

@@ -100,5 +100,29 @@ add_filter( 'render_block', 'm4c_enqueue_features', 20 );
 function m4c_enqueue_assets() {
 	wp_enqueue_style( 'm4c-style', get_stylesheet_uri(), array(), (string) filemtime( get_stylesheet_directory() . '/style.css' ) );
 	wp_enqueue_script( 'm4c-script', m4c_script_url( 'mod4comp' ), array(), wp_get_theme()->get( 'Version' ), true );
+	if ( is_front_page() ) {
+		wp_enqueue_script( 'm4c-intro', m4c_script_url( 'intro' ), array(), wp_get_theme()->get( 'Version' ), true );
+	}
 }
+
+/**
+ * Start-Animation (nur Startseite, einmal pro Besuch): Linien laufen von den
+ * Bildschirmrändern zur Mitte, werden zum Logo, das Logo schwebt in die
+ * Hero-Karte. Entscheidung im <head>, damit nichts aufblitzt; entfällt bei
+ * "Bewegung reduzieren" (Animation: js/src/intro.js, Stil: _intro.scss).
+ */
+function m4c_intro_guard() {
+	if ( ! is_front_page() ) {
+		return;
+	}
+	echo "<script>(function(){try{if(sessionStorage.getItem('m4c-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches)return;}catch(e){return;}document.documentElement.classList.add('intro-on');})();</script>\n";
+}
+add_action( 'wp_head', 'm4c_intro_guard', 1 );
+
+function m4c_intro_markup() {
+	if ( is_front_page() ) {
+		echo '<div class="intro" aria-hidden="true" data-logo="' . esc_url( get_template_directory_uri() . '/images/logo.svg' ) . '"></div>' . "\n";
+	}
+}
+add_action( 'wp_body_open', 'm4c_intro_markup' );
 add_action( 'wp_enqueue_scripts', 'm4c_enqueue_assets' );
