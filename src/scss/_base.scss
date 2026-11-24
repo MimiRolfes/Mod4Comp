@@ -103,3 +103,7 @@ html[data-lang="de"] .lang-en { display: none; }
   border-bottom: 1px solid currentColor;
   border-radius: 0;
 }
+
+/* Farbiger Akzent in Überschriften: auf Dunkel Leaf, auf Beige Grün */
+.heading .accent { color: var(--green); }
+.section--dark .heading .accent { color: var(--leaf); }

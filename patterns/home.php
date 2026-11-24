@@ -56,8 +56,7 @@ m4c_close( 'section' );
 /* ───────────── TEILPROJEKTE (Karussell) ───────────── */
 m4c_open( 'section section--dark subprojects', 'section', 'subprojects' );
 m4c_open( 'container sp-head' );
-m4c_i18n( '/ Subprojects', '/ Teilprojekte', 'p', 'label label--leaf' );
-m4c_i18n( 'Get to know our subprojects', 'Lerne unsere Teilprojekte kennen', 'h2', 'heading' );
+m4c_i18n( 'Get to know our <span class="accent">subprojects</span>', 'Lerne unsere <span class="accent">Teilprojekte</span> kennen', 'h2', 'heading' );
 m4c_close();
 
 m4c_open( 'sp-carousel' );
